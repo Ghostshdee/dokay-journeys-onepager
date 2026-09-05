@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<!-- Энэ мөр байхгүй үед утасны хөтөч хуудсыг 980px өргөнөөр буулгаж,
+     бүх зүйл жижгэрч, хэрэглэгч чимхэж томруулах шаардлагатай болдог. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokay Journeys — Үйлчилгээний багц</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a0f0a;
+    --paper: #f4ebd9;
+    --crimson: #8b1a1a;
+    --gold: #c9a961;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    padding: 4rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  
+  .header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--crimson);
+  }
+  
+  .brand-sub {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+  }
+  
+  .doc-meta {
+    text-align: right;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  
+  h1 em { color: var(--crimson); }
+  
+  .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--ink);
+    opacity: 0.8;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+  
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--crimson);
+    border-bottom: 1px solid rgba(26,15,10,0.2);
+    padding-bottom: 0.5rem;
+  }
+  
+  .package {
+    border: 1px solid rgba(26,15,10,0.2);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    background: rgba(201,169,97,0.08);
+    page-break-inside: avoid;
+  }
+  
+  .package-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .package-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+  
+  .package-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--crimson);
+    font-weight: 500;
+  }
+  
+  .package-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+  
+  .package ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .package li {
+    padding: 0.4rem 0 0.4rem 1.5rem;
+    position: relative;
+    font-size: 0.95rem;
+  }
+  
+  .package li::before {
+    content: '◆';
+    color: var(--gold);
+    position: absolute;
+    left: 0;
+    font-size: 0.7rem;
+    top: 0.7rem;
+  }
+  
+  .process {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .step {
+    border-left: 3px solid var(--crimson);
+    padding-left: 1rem;
+  }
+  
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  
+  .step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    margin: 0.3rem 0;
+  }
+  
+  .step p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.4;
+  }
+  
+  .deliverables {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .deliverable {
+    padding: 1rem;
+    background: rgba(255,255,255,0.4);
+    border-left: 2px solid var(--gold);
+  }
+  
+  .deliverable h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .deliverable p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+  
+  .quote {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+  }
+  
+  .quote .mark {
+    color: var(--gold);
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-strip {
+    margin-top: 4rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  
+  .note {
+    background: rgba(139,26,26,0.08);
+    border-left: 3px solid var(--crimson);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  @media print {
+    body { padding: 2rem; }
+  }
+  
+  @media (max-width: 600px) {
+    body { padding: 2rem 1.5rem; }
+    .process { grid-template-columns: 1fr; }
+    .deliverables { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="brand">Dokay Journeys</div>
+    <div class="brand-sub">Аяллын мэдрэмжийг үлдэхүйц болгоё</div>
+  </div>
+  <div class="doc-meta">
+    Үйлчилгээний багц<br>
+    Mongolia · 2026
+  </div>
+</div>
+
+<h1>Чиний аяллыг <em>ховор</em><br>дурсамж болгоно</h1>
+<p class="lead">Бид аяллын байгууллага биш. Бид аяллын <em>үргэлжлэл</em>. Чи явахаас өмнө, үед, дараах гурван үе шатанд тусална.</p>
+
+<!-- 3 PACKAGES -->
+<h2>Үйлчилгээний 3 багц</h2>
+
+<div class="package">
+  <div class="package-header">
+    <div class="package-name">I · Аяллын өмнөх төлөвлөгөө</div>
+    <div class="package-price">150,000 – 350,000 ₮</div>
+  </div>
+  <div class="package-desc">Аяллаа эхлэхээс өмнө бэлэн, гоё харагдсан, дижитал маршрут.</div>
+  <ul>
+    <li>Маршрутын дэлгэрэнгүй өдөр бүрийн scenario</li>
+    <li>Газрын зургийн линктэй (Google Maps)</li>
+    <li>Бэлтгэх хэрэгсэл, зөвлөмжийн жагсаалт</li>
+    <li>Интерактив вэб (Gamma эсвэл custom HTML) — линкээр share хийнэ</li>
+    <li>PDF хувилбар (offline үед, утсаар үзэх)</li>
+    <li>Аяллын төсвийн тооцоолол (нэг хүний өртөг)</li>
+  </ul>
+</div>
+
+<div class="package">
+  <div class="package-header">
+    <div class="package-name">II · Аяллын дараах гэрэл зургийн цомог</div>
+    <div class="package-price">300,000 – 800,000 ₮</div>
+  </div>
+  <div class="package-desc">Аяллаас буцаж ирээд зургуудаа өгөхөд бид PROFESSIONAL цомог болгоно.</div>
+  <ul>
+    <li>Зургийн curation — 500-аас 60-80 хамгийн сайныг сонгох</li>
+    <li>Color grading + retouching (туристууд, хогийг арилгах)</li>
+    <li>Cinematic PDF album (15-25 хуудас, өөрийн өнгөтэй)</li>
+    <li>Гарын авлагатай хувилбар (хэвлэгдэхэд бэлэн, 300 DPI)</li>
+    <li>Тайлбар бичих (өөрийн тэмдэглэл + бидний editorial)</li>
+    <li>2 хувилбар: дижитал + хэвлэх бэлэн</li>
+  </ul>
+</div>
+
+<div class="package">
+  <div class="package-header">
+    <div class="package-name">III · Slideshow видео</div>
+    <div class="package-price">200,000 – 500,000 ₮</div>
+  </div>
+  <div class="package-desc">Social-д тавихад бэлэн, эсвэл найз нөхдөө гайхуулах видео.</div>
+  <ul>
+    <li>1-3 минутын cinematic slideshow</li>
+    <li>Хөгжимтэй (royalty-free эсвэл өөрийн сонголтоор)</li>
+    <li>Vertical (9:16) болон horizontal (16:9) хоёр хувилбар</li>
+    <li>Гарчиг, өдрийн тэмдэглэгээ, газрын нэр overlay</li>
+    <li>Дэвшилтэт хувилбар: AI-аар үүсгэсэн cinematic clips нэмэх</li>
+    <li>4K хүртэл resolution</li>
+  </ul>
+</div>
+
+<div class="note">
+  <strong>BUNDLE — 3 багц авбал 30% хямдрал.</strong><br>
+  Жишээ нь: I + II + III = ~1,000,000 ₮ → 700,000 ₮ (нэг бүлэг 5-6 хүн).
+</div>
+
+<!-- WORKFLOW -->
+<h2>Бидний ажиллах журам</h2>
+
+<div class="process">
+  <div class="step">
+    <div class="step-num">01</div>
+    <h3>Уулзалт</h3>
+    <p>30 минутын уулзалт — зорилго, хүний тоо, мэдрэмж, төсөв ярилцана.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">02</div>
+    <h3>Бүтээх</h3>
+    <p>3-7 хоногийн дотор draft бэлэн. Чи review хийнэ, бид засна.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">03</div>
+    <h3>Хүлээлгэж өгөх</h3>
+    <p>Эцсийн файлууд digital + хэвлэх бэлэн форматаар.</p>
+  </div>
+</div>
+
+<!-- DELIVERABLES -->
+<h2>Хүлээж авах файлууд</h2>
+
+<div class="deliverables">
+  <div class="deliverable">
+    <h4>PDF Album</h4>
+    <p>15-25 хуудас, A4 landscape, 300 DPI. Дижитал + хэвлэхэд бэлэн.</p>
+  </div>
+  <div class="deliverable">
+    <h4>Interactive Web</h4>
+    <p>Линкээр share хийх. Mobile-friendly. Custom URL боломжтой.</p>
+  </div>
+  <div class="deliverable">
+    <h4>Slideshow MP4</h4>
+    <p>4K эсвэл 1080p. Vertical + horizontal хоёр хувилбар.</p>
+  </div>
+  <div class="deliverable">
+    <h4>RAW + JPEG Pack</h4>
+    <p>Эх зургуудын color graded хувилбар — өөрийн архивт үлдэх.</p>
+  </div>
+</div>
+
+<!-- TARGET CUSTOMERS -->
+<h2>Зорилтот үйлчлүүлэгчид</h2>
+
+<ul style="list-style:none; padding-left:0;">
+  <li style="padding:0.5rem 0; border-bottom:1px solid rgba(26,15,10,0.1);">
+    <strong>🎒 Найзуудтайгаа аялсан бүлгүүд</strong> — нэг хүний дурсамж бүгдэд хүрэхгүй.
+  </li>
+  <li style="padding:0.5rem 0; border-bottom:1px solid rgba(26,15,10,0.1);">
+    <strong>💑 Сүй тавьсан, шинэ гэр бүл</strong> — honeymoon, годүүний дурсамж.
+  </li>
+  <li style="padding:0.5rem 0; border-bottom:1px solid rgba(26,15,10,0.1);">
+    <strong>👨‍👩‍👧 Гэр бүлийн аялал</strong> — хүүхдүүд том болоход дамжуулах түүх.
+  </li>
+  <li style="padding:0.5rem 0; border-bottom:1px solid rgba(26,15,10,0.1);">
+    <strong>🏢 Корпорат retreats</strong> — компанийн аяллын official тайлан.
+  </li>
+  <li style="padding:0.5rem 0;">
+    <strong>🌐 Гадаад жуулчид (премиум)</strong> — Англи хэлээр, $300-800 үнэтэй package.
+  </li>
+</ul>
+
+<!-- QUOTE -->
+<div class="quote">
+  <span class="mark">⊹</span>
+  Аяллын зураг утсан дотор үлдэхээ болих хэрэгтэй.<br>
+  Тэр түүхэн зүйл, ариун зүйл. Зохих ёсоор хадгал.
+</div>
+
+<!-- CONTACT -->
+<h2>Холбоо барих</h2>
+
+<p style="font-family:'Cormorant Garamond', serif; font-size:1.1rem;">
+Бид Сэлэнгэ, Дархан, УБ-д аль ч аяллын дараа уулзахад бэлэн. Танай группын аяллын зурагнуудаас 3-5 ширхэгийг илгээгээрэй — бид доорх жишээний нэгийг үнэгүй draft хийж танд харуулна.
+</p>
+
+<div class="footer-strip">
+  <div>Dokay Journeys · Сэлэнгэ · Mongolia</div>
+  <div>v1.0 · 2026</div>
+</div>
+
+</body>
+</html>
