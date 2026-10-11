@@ -7,14 +7,14 @@
 <meta name="theme-color" content="#081511">
 
 <title>Dokay Journeys — Аяллын дурсамжийн студи</title>
-<meta name="description" content="Аялал дуусдаг, дурсамж үлддэг. Dokay Journeys аяллын өмнөх төлөвлөгөө, дараах гэрэл зургийн цомог, slideshow видеог AI болон гар урлагаар бүтээнэ.">
+<meta name="description" content="Аялал дуусдаг, дурсамж үлддэг. Dokay Journeys аяллын өмнөх төлөвлөгөө, дараах гэрэл зургийн цомог, слайд видеог хиймэл оюун болон гар урлалаар бүтээнэ.">
 <link rel="canonical" href="https://ghostshdee.github.io/dokay-journeys-onepager/">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="mn_MN">
 <meta property="og:url" content="https://ghostshdee.github.io/dokay-journeys-onepager/">
 <meta property="og:title" content="Dokay Journeys — Аяллын дурсамжийн студи">
-<meta property="og:description" content="Аялал дуусдаг, дурсамж үлддэг. Аяллын төлөвлөгөө, гэрэл зургийн цомог, slideshow видео.">
+<meta property="og:description" content="Аялал дуусдаг, дурсамж үлддэг. Аяллын төлөвлөгөө, гэрэл зургийн цомог, слайд видео.">
 <meta property="og:image" content="https://ghostshdee.github.io/dokay-journeys-onepager/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -203,7 +203,7 @@ html.js:not(.ready) .layer{ opacity:0 }
 .layer--sky{
   inset:0; width:100%; height:100%; opacity:1; transition:none;
   background:
-    radial-gradient(38% 30% at 50% 56%, rgba(247,238,205,.62), rgba(247,238,205,.14) 44%, transparent 72%),
+    radial-gradient(42% 24% at 50% 17%, rgba(247,238,205,.5), rgba(247,238,205,.12) 44%, transparent 72%),
     linear-gradient(179deg,#1a4335 0%,#215239 26%,#2f6349 48%,#4a856a 72%,#69a888 100%);
 }
 .scene::after{ /* ирмэгийн зөөлөн харанхуйжуулалт + доош хуудасны өнгө рүү шилжих */
@@ -227,6 +227,8 @@ html.js:not(.ready) .layer{ opacity:0 }
 
 /* Hero контент */
 .hero-inner{ position:relative; z-index:2; width:100%; will-change:transform,opacity }
+.hero-content{ position:relative }
+.hero-content::before{ content:''; position:absolute; inset:4% -10% 2%; z-index:-1; pointer-events:none; background:radial-gradient(closest-side,rgba(6,18,13,.5),transparent) }
 .hero-content{
   width:min(760px,100%); margin-inline:auto; text-align:center;
   padding:120px 1.5rem 0;
@@ -245,9 +247,9 @@ html.js:not(.ready) .layer{ opacity:0 }
   color:var(--cream);
   font-size:clamp(2.1rem,7.4vw,5.7rem);
   line-height:1.05; letter-spacing:-.01em;
-  text-shadow:0 2px 30px rgba(0,0,0,.35);
+  text-shadow:0 2px 24px rgba(5,14,11,.55), 0 1px 3px rgba(5,14,11,.45);
 }
-.hero h1 .i{ font-style:italic; color:var(--mint) }
+.hero h1 .i{ font-style:italic; color:#a8f0c8 }
 .hero p.sub{
   margin:1.5rem auto 0; max-width:33rem;
   font-size:clamp(1rem,2.4vw,1.14rem); color:#cfe2d6;
@@ -290,6 +292,7 @@ section{ position:relative; z-index:1 }
 
 /* Багцууд */
 .pkg-grid{ display:grid; gap:1.1rem }
+.pkg-more{ display:none }
 .pkg{
   border:1px solid var(--line-soft); border-radius:20px;
   background:linear-gradient(180deg,var(--panel),rgba(11,26,20,.4));
@@ -312,6 +315,31 @@ section{ position:relative; z-index:1 }
   width:7px; height:7px; border-radius:2px; background:var(--sage);
   transform:rotate(45deg);
 }
+/* Компьютер: 3 багц зэрэгцээ, мөр мөрөөрөө зэрэгцэн харьцуулагдана */
+@media (min-width:1000px){
+  .pkg-grid{ grid-template-columns:repeat(3,1fr); align-items:stretch }
+  .pkg-name{ font-size:1.2rem }
+  .pkg-top{ flex-direction:column; align-items:flex-start; gap:.35rem }
+}
+@supports (grid-template-rows:subgrid){
+  @media (min-width:1000px){
+    .pkg{ display:grid; grid-row:span 3; grid-template-rows:subgrid; row-gap:0 }
+  }
+}
+
+/* Утас, таблет: эхний 3 мөр, үлдсэнийг товчоор дэлгэнэ (JS-гүй бол бүгд харагдана) */
+@media (max-width:999px){
+  html.js .pkg:not(.open) li:nth-child(n+4){ display:none }
+  html.js .pkg-more{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-height:44px; margin-top:1.1rem; padding:.55rem 1.3rem;
+    border:1px solid var(--line); border-radius:999px;
+    background:transparent; color:var(--cream);
+    font:600 .9rem 'Manrope',system-ui,sans-serif; cursor:pointer;
+  }
+  html.js .pkg-more:hover{ background:rgba(143,224,180,.08) }
+}
+
 .bundle{
   margin-top:1.1rem; border-radius:20px; padding:1.4rem 1.6rem;
   border:1px solid rgba(143,224,180,.28);
@@ -425,7 +453,7 @@ html:not(.js) .layer{ opacity:1 }
       <a href="#contact">Холбоо</a>
     </nav>
     <a href="#contact" class="pill pill--sm">
-      Үнэгүй draft
+      Үнэгүй жишээ загвар
       <span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
     </a>
     <button class="burger" aria-label="Цэс" aria-expanded="false" aria-controls="drawer">☰</button>
@@ -453,8 +481,8 @@ html:not(.js) .layer{ opacity:1 }
             <stop offset="100%" stop-color="#f6ecc6" stop-opacity="0"/>
           </radialGradient>
         </defs>
-        <circle fill="url(#halo)" cx="720" cy="470" r="210"/>
-        <circle fill="#fdf6df" cx="720" cy="470" r="52"/>
+        <circle fill="url(#halo)" cx="720" cy="215" r="150"/>
+        <circle fill="#fdf6df" cx="720" cy="215" r="46"/>
       </svg>
     </div>
 
@@ -552,12 +580,12 @@ html:not(.js) .layer{ opacity:1 }
 
   <div class="hero-inner">
     <div class="hero-content">
-      <span class="badge"><b></b>AI + гар урлагаар бүтээнэ</span>
+      <span class="badge"><b></b>Хиймэл оюун + гар урлалаар бүтээнэ</span>
       <h1 class="serif">Аялал дуусдаг.<br><span class="i">Дурсамж</span> үлддэг.</h1>
       <p class="sub">Бид аяллын байгууллага биш — аяллын үргэлжлэл. Явахаас өмнө, дараа нь чиний түүхийг бэлэн, гоё, үлдэхүйц хэлбэрт оруулна.</p>
       <div class="hero-cta">
         <a href="#contact" class="pill">
-          Үнэгүй draft авах
+          Үнэгүй жишээ загвар авах
           <span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </a>
         <a href="#packages" class="pill pill--ghost">
@@ -593,13 +621,13 @@ html:not(.js) .layer{ opacity:1 }
           <div class="pkg-name serif">I · Аяллын өмнөх төлөвлөгөө</div>
           <div class="pkg-price serif">150,000 – 350,000 ₮</div>
         </div>
-        <p class="pkg-desc">Аяллаа эхлэхээс өмнө бэлэн, гоё харагдсан, дижитал маршрут.</p>
+        <p class="pkg-desc">Аяллаа эхлэхээс өмнө бэлэн, гоё харагдсан, цахим маршрут.</p>
         <ul>
-          <li>Маршрутын дэлгэрэнгүй, өдөр бүрийн scenario</li>
-          <li>Газрын зургийн линктэй (Google Maps)</li>
+          <li>Маршрутын дэлгэрэнгүй, өдөр бүрийн хөтөлбөр</li>
+          <li>Газрын зургийн холбоостой (Google Maps)</li>
           <li>Бэлтгэх хэрэгсэл, зөвлөмжийн жагсаалт</li>
-          <li>Интерактив вэб (Gamma эсвэл custom HTML) — линкээр share</li>
-          <li>PDF хувилбар (offline, утсаар үзэх)</li>
+          <li>Дарж үзэх вэб хуудас (Gamma эсвэл өөрийн бичсэн HTML) — холбоосоор хуваалцана</li>
+          <li>PDF хувилбар (интернэтгүйгээр утсаар үзэх)</li>
           <li>Аяллын төсвийн тооцоолол (нэг хүний өртөг)</li>
         </ul>
       </article>
@@ -609,36 +637,36 @@ html:not(.js) .layer{ opacity:1 }
           <div class="pkg-name serif">II · Аяллын дараах гэрэл зургийн цомог</div>
           <div class="pkg-price serif">300,000 – 800,000 ₮</div>
         </div>
-        <p class="pkg-desc">Буцаж ирээд зургуудаа өгөхөд бид professional цомог болгоно.</p>
+        <p class="pkg-desc">Буцаж ирээд зургуудаа өгөхөд бид мэргэжлийн цомог болгоно.</p>
         <ul>
-          <li>Зургийн curation — 500-аас 60–80 хамгийн сайныг сонгох</li>
-          <li>Color grading + retouching (туристууд, хог арилгах)</li>
-          <li>Cinematic PDF album (15–25 хуудас, өөрийн өнгөтэй)</li>
+          <li>Зураг шүүх — 500 зургаас хамгийн сайн 60–80-ыг сонгох</li>
+          <li>Өнгө тохируулга + зураг засвар (зураг дундах жуулчид, хогийг арилгах)</li>
+          <li>Кино маягийн PDF цомог (15–25 хуудас, өөрийн өнгөтэй)</li>
           <li>Хэвлэхэд бэлэн хувилбар (300 DPI)</li>
-          <li>Тайлбар бичих (өөрийн тэмдэглэл + бидний editorial)</li>
-          <li>2 хувилбар: дижитал + хэвлэх бэлэн</li>
+          <li>Тайлбар бичих (таны тэмдэглэл + манай найруулга)</li>
+          <li>2 хувилбар: цахим + хэвлэхэд бэлэн</li>
         </ul>
       </article>
 
       <article class="pkg" data-reveal>
         <div class="pkg-top">
-          <div class="pkg-name serif">III · Slideshow видео</div>
+          <div class="pkg-name serif">III · Слайд видео</div>
           <div class="pkg-price serif">200,000 – 500,000 ₮</div>
         </div>
-        <p class="pkg-desc">Social-д тавихад бэлэн, эсвэл найз нөхдөө гайхуулах видео.</p>
+        <p class="pkg-desc">Сошиал сүлжээнд шууд тавихад бэлэн, эсвэл найз нөхдөө гайхуулах видео.</p>
         <ul>
-          <li>1–3 минутын cinematic slideshow</li>
-          <li>Хөгжимтэй (royalty-free эсвэл өөрийн сонголтоор)</li>
-          <li>Vertical (9:16) ба horizontal (16:9) хоёр хувилбар</li>
-          <li>Гарчиг, өдрийн тэмдэглэгээ, газрын нэр overlay</li>
-          <li>Дэвшилтэт: AI-аар үүсгэсэн cinematic clips нэмэх</li>
-          <li>4K хүртэл resolution</li>
+          <li>1–3 минутын кино маягийн слайд видео</li>
+          <li>Хөгжимтэй (төлбөргүй ашиглах эрхтэй хөгжим эсвэл өөрийн сонголтоор)</li>
+          <li>Босоо (9:16) ба хэвтээ (16:9) хоёр хувилбар</li>
+          <li>Зургийн дээр гарчиг, өдрийн тэмдэглэгээ, газрын нэр бичнэ</li>
+          <li>Нэмэлт: хиймэл оюунаар хийсэн кино маягийн богино клип оруулах</li>
+          <li>4K хүртэл тод нягтралтай</li>
         </ul>
       </article>
     </div>
 
     <div class="bundle" data-reveal>
-      <b>BUNDLE — 3 багц авбал 30% хямдрал.</b><br>
+      <b>Хамтад нь — 3 багцыг цуг авбал 30% хямдрал.</b><br>
       Жишээ нь: I + II + III ≈ 1,000,000 ₮ → <b>700,000 ₮</b> (нэг бүлэг 5–6 хүн).
     </div>
   </div>
@@ -660,12 +688,12 @@ html:not(.js) .layer{ opacity:1 }
       <div class="step" data-reveal>
         <div class="n serif">02</div>
         <h3 class="serif">Бүтээх</h3>
-        <p>3–7 хоногийн дотор draft бэлэн. Чи review хийнэ, бид засна.</p>
+        <p>3–7 хоногийн дотор жишээ загвар бэлэн. Чи үзээд санал өгнө, бид засна.</p>
       </div>
       <div class="step" data-reveal>
         <div class="n serif">03</div>
         <h3 class="serif">Хүлээлгэж өгөх</h3>
-        <p>Эцсийн файлууд digital + хэвлэх бэлэн форматаар.</p>
+        <p>Эцсийн файлууд цахим + хэвлэхэд бэлэн хэлбэрээр.</p>
       </div>
     </div>
   </div>
@@ -679,10 +707,10 @@ html:not(.js) .layer{ opacity:1 }
       <h2 class="serif">Файлууд</h2>
     </div>
     <div class="files">
-      <div class="file" data-reveal><h4 class="serif">PDF Album</h4><p>15–25 хуудас, A4 landscape, 300 DPI. Дижитал + хэвлэхэд бэлэн.</p></div>
-      <div class="file" data-reveal><h4 class="serif">Interactive Web</h4><p>Линкээр share хийх. Mobile-friendly. Custom URL боломжтой.</p></div>
-      <div class="file" data-reveal><h4 class="serif">Slideshow MP4</h4><p>4K эсвэл 1080p. Vertical + horizontal хоёр хувилбар.</p></div>
-      <div class="file" data-reveal><h4 class="serif">RAW + JPEG Pack</h4><p>Эх зургуудын color graded хувилбар — өөрийн архивт үлдэх.</p></div>
+      <div class="file" data-reveal><h4 class="serif">PDF цомог</h4><p>15–25 хуудас, A4 хэвтээ, 300 DPI. Цахим + хэвлэхэд бэлэн.</p></div>
+      <div class="file" data-reveal><h4 class="serif">Дарж үзэх вэб</h4><p>Холбоосоор хуваалцана. Утсан дээр сайн харагдана. Өөрийн нэртэй хаяг авах боломжтой.</p></div>
+      <div class="file" data-reveal><h4 class="serif">Слайд видео (MP4)</h4><p>4K эсвэл 1080p. Босоо + хэвтээ хоёр хувилбар.</p></div>
+      <div class="file" data-reveal><h4 class="serif">RAW + JPEG багц</h4><p>Эх зургуудын өнгө тохируулсан хувилбар — өөрийн архивт үлдэнэ.</p></div>
     </div>
   </div>
 </section>
@@ -696,10 +724,10 @@ html:not(.js) .layer{ opacity:1 }
     </div>
     <div class="aud">
       <div data-reveal><span class="em" aria-hidden="true">🎒</span><p><b>Найзуудтайгаа аялсан бүлгүүд</b> — нэг хүний дурсамж бүгдэд хүрэхгүй.</p></div>
-      <div data-reveal><span class="em" aria-hidden="true">💑</span><p><b>Сүй тавьсан, шинэ гэр бүл</b> — honeymoon, зөгийн балны дурсамж.</p></div>
+      <div data-reveal><span class="em" aria-hidden="true">💑</span><p><b>Сүй тавьсан, шинэ гэр бүл</b> — бал сарын дурсамж.</p></div>
       <div data-reveal><span class="em" aria-hidden="true">👨‍👩‍👧</span><p><b>Гэр бүлийн аялал</b> — хүүхдүүд том болоход дамжуулах түүх.</p></div>
-      <div data-reveal><span class="em" aria-hidden="true">🏢</span><p><b>Корпорат retreat</b> — компанийн аяллын official тайлан.</p></div>
-      <div data-reveal><span class="em" aria-hidden="true">🌐</span><p><b>Гадаад жуулчид (премиум)</b> — англи хэлээр, $300–800 үнэтэй багц.</p></div>
+      <div data-reveal><span class="em" aria-hidden="true">🏢</span><p><b>Байгууллагын баг хамт олны аялал</b> — компанийн аяллын албан ёсны тайлан.</p></div>
+      <div data-reveal><span class="em" aria-hidden="true">🌐</span><p><b>Гадаад жуулчид (өндөр зэрэглэлийн)</b> — англи хэлээр, $300–800 үнэтэй багц.</p></div>
     </div>
   </div>
 </section>
@@ -718,9 +746,9 @@ html:not(.js) .layer{ opacity:1 }
 <section class="band contact" id="contact">
   <div class="wrap" data-reveal>
     <span class="eyebrow">Холбоо барих</span>
-    <p class="big serif">Бид Сэлэнгэ, Дархан, УБ-д аль ч аяллын дараа уулзахад бэлэн. Танай бүлгийн зургаас 3–5 ширхэгийг илгээгээрэй — бид нэг жишээ draft-ыг үнэгүй хийж харуулна.</p>
+    <p class="big serif">Бид Сэлэнгэ, Дархан, УБ-д аль ч аяллын дараа уулзахад бэлэн. Танай бүлгийн зургаас 3–5 ширхэгийг илгээгээрэй — бид нэг жишээ загварыг үнэгүй хийж харуулна.</p>
     <div class="contact-cta">
-      <a href="mailto:dulguun.ah@gmail.com?subject=Dokay%20Journeys%20draft" class="pill">
+      <a href="mailto:dulguun.ah@gmail.com?subject=Dokay%20Journeys" class="pill">
         Зургаа илгээх
         <span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
       </a>
@@ -735,14 +763,14 @@ html:not(.js) .layer{ opacity:1 }
 <footer>
   <div class="wrap">
     <div>Dokay Journeys · Сэлэнгэ · Дархан · УБ</div>
-    <div>© <span id="yr">2026</span> · Mongolia</div>
+    <div>© <span id="yr">2026</span> · Монгол</div>
   </div>
 </footer>
 
 <noscript>
   <div style="position:fixed;inset:0;background:#081511;color:#e9f3ec;padding:3rem 1.5rem;overflow:auto;font-family:sans-serif;z-index:200">
     <h1 style="font-family:'Playfair Display',serif">Dokay Journeys</h1>
-    <p style="color:#9dbdad;margin-top:1rem;max-width:40rem;line-height:1.7">Аяллын өмнөх төлөвлөгөө, дараах гэрэл зургийн цомог, slideshow видео. Холбоо барих: dulguun.ah@gmail.com</p>
+    <p style="color:#9dbdad;margin-top:1rem;max-width:40rem;line-height:1.7">Аяллын өмнөх төлөвлөгөө, дараах гэрэл зургийн цомог, слайд видео. Холбоо барих: dulguun.ah@gmail.com</p>
   </div>
 </noscript>
 
@@ -794,6 +822,21 @@ html:not(.js) .layer{ opacity:1 }
   } else {
     document.querySelectorAll('[data-reveal]').forEach(function(el){ el.classList.add('in'); });
   }
+
+  // Багц бүрийн жагсаалт: нарийн дэлгэцэд эхний 3 мөр, "Бүгдийг харах" товчоор дэлгэнэ
+  document.querySelectorAll('.pkg').forEach(function(p){
+    var more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'pkg-more';
+    more.setAttribute('aria-expanded', 'false');
+    more.textContent = 'Бүгдийг харах';
+    more.addEventListener('click', function(){
+      var open = p.classList.toggle('open');
+      more.setAttribute('aria-expanded', open ? 'true' : 'false');
+      more.textContent = open ? 'Хураах' : 'Бүгдийг харах';
+    });
+    p.appendChild(more);
+  });
 
   if (reduce) return;
 
