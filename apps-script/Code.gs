@@ -23,8 +23,26 @@ var ROOT_NAME = 'Dokay Journeys — Захиалга';
 var MAX_B64 = 15 * 1024 * 1024;
 var MIMES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
-function doGet() {
-  return out_({ ok: true, service: 'dokay-journeys-intake' });
+// Түлхүүртэй GET — Dokay захиалгын зургийг татаж slideshow хийнэ (?o=&k= жагсаалт, &f=001.jpg нэг файл base64)
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (!p.o) return out_({ ok: true, service: 'dokay-journeys-intake' });
+  var o = String(p.o), k = String(p.k || '');
+  if (!/^[A-Za-z0-9_-]{2,40}$/.test(o) || !checkKey_(o, k)) return out_({ ok: false, error: 'key' });
+  var root = DriveApp.getRootFolder().getFoldersByName(ROOT_NAME);
+  if (!root.hasNext()) return out_({ ok: false, error: 'none' });
+  var fit = root.next().getFoldersByName(o);
+  if (!fit.hasNext()) return out_({ ok: false, error: 'none' });
+  var folder = fit.next();
+  if (p.f) {
+    var it = folder.getFilesByName(String(p.f));
+    if (!it.hasNext()) return out_({ ok: false, error: 'file' });
+    var blob = it.next().getBlob();
+    return out_({ ok: true, name: blob.getName(), mime: blob.getContentType(), b64: Utilities.base64Encode(blob.getBytes()) });
+  }
+  var names = [], files = folder.getFiles();
+  while (files.hasNext()) names.push(files.next().getName());
+  return out_({ ok: true, files: names.sort() });
 }
 
 function doPost(e) {
