@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<script>
+// Тохиргоо — Apps Script deploy хийсний дараа URL-ийг энд тавина (README → «Зураг хүлээн авах»)
+const CONFIG = {
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbwCCUxlWYCN1p7OMCqG4OkVCYgWFwjdzPPjKXGw-L3l7J1is4dyKopAWPU4C7Pj_IJg/exec',
+  maxFiles: 80,
+  maxSide: 3000,
+  quality: 0.9,
+  captionMax: 200,
+  parallel: 2,
+  retries: 3
+};
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#081511">
+<title>Аяллын зургаа илгээх — Dokay Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#081511; --bg-2:#0b1d16;
+  --panel:rgba(17,40,30,.55); --line:rgba(150,205,178,.16);
+  --cream:#e9f3ec; --mist:#9dbdad; --sage:#6bae8a; --mint:#8fe0b4;
+  --ink:#07120e; --danger:#f2a7a0;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{ box-sizing:border-box; margin:0; padding:0 }
+html{ -webkit-text-size-adjust:100% }
+body{
+  min-height:100vh; color:var(--cream); font-size:16px; line-height:1.55;
+  font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:radial-gradient(120% 55% at 50% 0%,#11291f 0%,var(--bg) 62%) fixed, var(--bg);
+}
+.wrap{ max-width:720px; margin:0 auto; padding:28px 18px 96px }
+.view[hidden]{ display:none }
+.brand{ font-family:'Playfair Display',serif; font-weight:600; color:var(--mint); letter-spacing:.02em }
+h1{ font-family:'Playfair Display',serif; font-weight:600; font-size:clamp(1.9rem,7vw,2.6rem); line-height:1.15; margin:18px 0 10px }
+.code{ display:inline-flex; gap:.45em; align-items:center; font-size:.85rem; color:var(--mist); border:1px solid var(--line); border-radius:999px; padding:4px 12px }
+.code b{ color:var(--mint); font-weight:600; letter-spacing:.06em }
+.steps{ list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:20px 0 4px }
+.steps li{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 10px; font-size:.82rem; color:var(--mist) }
+.steps .n{ display:block; font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--sage); line-height:1; margin-bottom:4px }
+.banner{ margin-top:16px; padding:12px 14px; border-radius:14px; border:1px solid rgba(242,167,160,.4); background:rgba(242,167,160,.08); color:var(--danger); font-size:.92rem }
+.card{ background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:20px 16px; margin-top:18px; animation:rise .6s var(--ease) both }
+.card h2{ font-family:'Playfair Display',serif; font-weight:600; font-size:1.25rem; margin-bottom:12px }
+.f{ display:block; margin-bottom:14px }
+.f > span{ display:block; font-size:.85rem; color:var(--mist); margin-bottom:6px }
+.f em{ font-style:normal; color:var(--mint) }
+input[type=text],input[type=tel],input[type=month],textarea{
+  width:100%; min-height:48px; padding:12px 14px; border-radius:12px; font:inherit;
+  background:rgba(7,18,14,.6); border:1px solid var(--line); color:var(--cream); color-scheme:dark;
+}
+textarea{ min-height:64px; resize:vertical }
+input::placeholder,textarea::placeholder{ color:rgba(157,189,173,.6) }
+input:focus-visible,textarea:focus-visible,button:focus-visible{ outline:2px solid var(--mint); outline-offset:2px }
+.drop{
+  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  min-height:150px; padding:20px; text-align:center; border-radius:16px;
+  border:1.5px dashed rgba(143,224,180,.45); transition:background .3s var(--ease),border-color .3s;
+}
+.drop.over{ background:rgba(143,224,180,.08); border-color:var(--mint) }
+.drop:focus-within{ outline:2px solid var(--mint); outline-offset:2px }
+.drop input{ position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer }
+.drop strong{ font-size:1.05rem }
+.drop small{ color:var(--mist) }
+.count{ margin-top:10px; font-size:.85rem; color:var(--mist) }
+.row{ display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; margin-top:14px }
+.row .f{ flex:1 1 170px; margin:0 }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 20px;
+  border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--cream);
+  font:inherit; font-weight:600; cursor:pointer;
+}
+.btn--main{ width:100%; background:var(--mint); border-color:var(--mint); color:var(--ink); font-size:1.05rem }
+.btn:disabled,.icon:disabled{ opacity:.5; cursor:not-allowed }
+.list{ list-style:none; display:grid; gap:12px; margin-top:14px }
+.item{
+  display:grid; grid-template-columns:88px 1fr; gap:12px; padding:10px; border-radius:16px;
+  background:rgba(7,18,14,.5); border:1px solid var(--line); animation:rise .5s var(--ease) both;
+}
+.item.sent{ border-color:rgba(143,224,180,.55) }
+.item img{ width:88px; height:88px; object-fit:cover; border-radius:10px; background:var(--bg-2) }
+.meta{ display:flex; flex-direction:column; gap:8px; min-width:0 }
+.top{ display:flex; align-items:center; gap:6px }
+.num{ flex:1; min-width:0; font-family:'Playfair Display',serif; font-size:1.15rem; color:var(--sage) }
+.icon{
+  width:44px; height:44px; flex:none; display:inline-flex; align-items:center; justify-content:center;
+  border-radius:12px; border:1px solid var(--line); background:transparent; color:var(--cream); font-size:1rem; cursor:pointer;
+}
+.sub{ display:flex; gap:8px; align-items:center }
+.sub input{ flex:1; min-width:0 }
+.cnt{ flex:none; font-size:.75rem; color:var(--mist) }
+.state{ font-size:.82rem; min-height:0 }
+.state.bad{ color:var(--danger) }
+.state.ok{ color:var(--mint) }
+.note{ margin-top:14px; font-size:.85rem; color:var(--mist) }
+.msg{ margin-top:12px; min-height:1.2em; font-size:.92rem; color:var(--danger) }
+.prog[hidden]{ display:none }
+.bar{ height:8px; margin:14px 0 6px; border-radius:99px; overflow:hidden; background:rgba(150,205,178,.15) }
+.bar i{ display:block; width:0; height:100%; background:linear-gradient(90deg,var(--sage),var(--mint)); transition:width .4s var(--ease) }
+.prog p{ font-size:.9rem; color:var(--mist) }
+.center{ text-align:center; padding-top:18vh }
+.center p{ color:var(--mist); margin-top:10px }
+@keyframes rise{ from{ opacity:0; transform:translateY(12px) } to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important } }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <section class="view center" id="v-bad" hidden>
+    <p class="brand">Dokay Journeys</p>
+    <h1>Линк буруу байна</h1>
+    <p>Линк буруу байна — Dokay-тай холбогдоорой.</p>
+  </section>
+
+  <section class="view" id="v-form" hidden>
+    <p class="brand">Dokay Journeys</p>
+    <h1>Аяллын зургаа илгээх</h1>
+    <span class="code">Захиалга <b id="order"></b></span>
+    <ol class="steps">
+      <li><span class="n">1</span>Зургаа сонгоно</li>
+      <li><span class="n">2</span>Тайлбар, он сараа бичнэ</li>
+      <li><span class="n">3</span>Илгээнэ</li>
+    </ol>
+    <p class="banner" id="cfg" hidden>Тохиргоо дутуу — одоогоор илгээх боломжгүй. Dokay-тай холбогдоорой.</p>
+
+    <form id="form" novalidate>
+      <div class="card">
+        <h2>Захиалагч</h2>
+        <label class="f"><span>Нэр <em>*</em></span><input type="text" id="name" autocomplete="name" maxlength="80" required></label>
+        <label class="f"><span>Утас</span><input type="tel" id="phone" autocomplete="tel" inputmode="tel" maxlength="40"></label>
+        <label class="f"><span>Аяллын нэр, газар</span><input type="text" id="trip" maxlength="120" placeholder="Жишээ: Хөвсгөл 2026"></label>
+      </div>
+
+      <div class="card">
+        <h2>Зургууд</h2>
+        <label class="drop" id="drop">
+          <input type="file" id="files" accept="image/*" multiple aria-label="Зураг сонгох">
+          <strong>Зураг сонгох</strong>
+          <small>эсвэл энд чирж оруулна · 1–<span id="max"></span> зураг</small>
+        </label>
+        <p class="count" id="count"></p>
+        <div class="row" id="allrow" hidden>
+          <label class="f"><span>Бүгдэд нэг он сар</span><input type="month" id="allMonth"></label>
+          <button type="button" class="btn" id="allBtn">Бүгдэд тавих</button>
+        </div>
+        <ul class="list" id="list"></ul>
+      </div>
+
+      <div class="card">
+        <div class="prog" id="prog" hidden>
+          <div class="bar"><i id="barFill"></i></div>
+          <p id="progText" aria-live="polite"></p>
+        </div>
+        <button type="submit" class="btn btn--main" id="send">Илгээх</button>
+        <p class="msg" id="msg" role="alert"></p>
+        <p class="note">Зургууд зөвхөн Dokay-ийн хувийн Google Drive-д хадгалагдана, гуравдагч этгээдэд өгөхгүй, ажил дууссаны дараа таны хүсэлтээр устгана.</p>
+      </div>
+    </form>
+  </section>
+
+  <section class="view center" id="v-done" hidden>
+    <p class="brand">Dokay Journeys</p>
+    <h1>Баярлалаа!</h1>
+    <p>Баярлалаа! Зургууд хүлээн авагдлаа. Бэлэн болмогц холбогдоно.</p>
+  </section>
+
+  <noscript><p class="banner">Энэ маягт JavaScript шаарддаг. Хөтчийнхөө тохиргоонд JavaScript-ийг асаана уу.</p></noscript>
+</main>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const show = id => document.querySelectorAll('.view').forEach(v => { v.hidden = v.id !== id; });
+
+  // Линкийн шалгалт — o, k байхгүй бол маягт нээгдэхгүй
+  const qs = new URLSearchParams(location.search);
+  const O = (qs.get('o') || '').trim();
+  const K = (qs.get('k') || '').trim();
+  if (!/^[A-Za-z0-9_-]{2,40}$/.test(O) || !K) { show('v-bad'); return; }
+
+  show('v-form');
+  $('#order').textContent = O;
+  $('#max').textContent = CONFIG.maxFiles;
+  if (!CONFIG.scriptUrl) $('#cfg').hidden = false;
+
+  const STORE = 'dj-sent:' + O;
+  const items = [];
+  let uid = 0, busy = false;
+
+  const msg = t => { $('#msg').textContent = t || ''; };
+  const pad2 = n => String(n).padStart(2, '0');
+  const monthOf = t => { const d = new Date(t || Date.now()); return d.getFullYear() + '-' + pad2(d.getMonth() + 1); };
+  const sig = f => [f.name, f.size, f.lastModified].join('|');
+  const isHeic = f => /hei[cf]$/i.test(f.type) || /\.hei[cf]$/i.test(f.name);
+  const readSent = () => { try { return JSON.parse(sessionStorage.getItem(STORE) || '{}'); } catch (e) { return {}; } };
+  const writeSent = m => { try { sessionStorage.setItem(STORE, JSON.stringify(m)); } catch (e) {} };
+  const BAD_TEXT = 'Энэ зургийг JPEG болгож дахин оруулна уу';
+
+  // Зураг нэмэх
+  function add(files) {
+    if (busy) return;
+    let skipped = 0;
+    for (const f of files) {
+      if (!(f.type.startsWith('image/') || isHeic(f)) || items.length >= CONFIG.maxFiles) { skipped++; continue; }
+      items.push({ id: ++uid, file: f, url: URL.createObjectURL(f), caption: '', month: monthOf(f.lastModified), bad: false, sent: null });
+    }
+    render();
+    msg(skipped ? skipped + ' файл нэмэгдсэнгүй (зураг биш, эсвэл ' + CONFIG.maxFiles + '-аас хэтэрсэн).' : '');
+  }
+
+  function stateOf(it) {
+    if (it.bad) return ['state bad', BAD_TEXT];
+    if (it.sent) return ['state ok', '✓ Илгээгдсэн'];
+    return ['state', ''];
+  }
+
+  // Картуудыг зурах
+  function render() {
+    const ul = $('#list');
+    ul.textContent = '';
+    items.forEach((it, i) => {
+      const li = document.createElement('li');
+      li.className = 'item' + (it.sent ? ' sent' : '');
+      li.dataset.id = it.id;
+      li.innerHTML =
+        '<img alt="">' +
+        '<div class="meta">' +
+          '<div class="top"><span class="num"></span>' +
+            '<button type="button" class="icon" data-a="up" aria-label="Дээш зөөх">↑</button>' +
+            '<button type="button" class="icon" data-a="down" aria-label="Доош зөөх">↓</button>' +
+            '<button type="button" class="icon" data-a="del" aria-label="Устгах">✕</button>' +
+          '</div>' +
+          '<textarea aria-label="Тайлбар" placeholder="Тайлбар: хаана, хэнтэй, ямар мөч…"></textarea>' +
+          '<div class="sub"><input type="month" aria-label="Он сар"><span class="cnt"></span></div>' +
+          '<p></p>' +
+        '</div>';
+      const img = li.querySelector('img');
+      const ta = li.querySelector('textarea');
+      const mo = li.querySelector('input');
+      const cnt = li.querySelector('.cnt');
+      const st = li.querySelector('p');
+      li.querySelector('.num').textContent = pad2(i + 1);
+      img.onerror = () => { it.bad = true; [st.className, st.textContent] = stateOf(it); };
+      img.src = it.url;
+      ta.maxLength = CONFIG.captionMax;
+      ta.value = it.caption;
+      mo.value = it.month;
+      cnt.textContent = it.caption.length + '/' + CONFIG.captionMax;
+      [st.className, st.textContent] = stateOf(it);
+      ta.addEventListener('input', () => { it.caption = ta.value; cnt.textContent = ta.value.length + '/' + CONFIG.captionMax; });
+      mo.addEventListener('change', () => { it.month = mo.value; });
+      li.querySelectorAll('button,textarea,input').forEach(el => { el.disabled = busy; });
+      ul.appendChild(li);
+    });
+    $('#count').textContent = items.length ? items.length + ' / ' + CONFIG.maxFiles + ' зураг' : '';
+    $('#allrow').hidden = !items.length;
+  }
+
+  $('#list').addEventListener('click', e => {
+    const b = e.target.closest('button[data-a]');
+    if (!b || busy) return;
+    const i = items.findIndex(it => it.id === Number(b.closest('li').dataset.id));
+    if (i < 0) return;
+    if (b.dataset.a === 'del') { URL.revokeObjectURL(items[i].url); items.splice(i, 1); }
+    if (b.dataset.a === 'up' && i > 0) [items[i - 1], items[i]] = [items[i], items[i - 1]];
+    if (b.dataset.a === 'down' && i < items.length - 1) [items[i + 1], items[i]] = [items[i], items[i + 1]];
+    render();
+  });
+
+  $('#allBtn').addEventListener('click', () => {
+    const v = $('#allMonth').value;
+    if (!v) return msg('Эхлээд он сараа сонгоно уу.');
+    items.forEach(it => { it.month = v; });
+    msg(''); render();
+  });
+
+  // Сонгох ба чирж оруулах
+  const input = $('#files'), drop = $('#drop');
+  input.addEventListener('change', () => { add(input.files); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'dragend'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer) add(e.dataTransfer.files); });
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => e.preventDefault());
+
+  // Зургийг уншиж, урт талыг ≤ maxSide болгоно
+  async function decode(file) {
+    if ('createImageBitmap' in window) { try { return await createImageBitmap(file); } catch (e) {} }
+    return new Promise((res, rej) => {
+      const img = new Image(), u = URL.createObjectURL(file);
+      img.onload = () => { URL.revokeObjectURL(u); res(img); };
+      img.onerror = () => { URL.revokeObjectURL(u); rej(new Error('decode')); };
+      img.src = u;
+    });
+  }
+  const toB64 = blob => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(',')[1] || '');
+    r.onerror = () => rej(r.error);
+    r.readAsDataURL(blob);
+  });
+  async function prepare(file) {
+    let src;
+    try { src = await decode(file); } catch (e) { throw new Error('decode'); }
+    const w = src.width, h = src.height;
+    const scale = Math.min(1, CONFIG.maxSide / Math.max(w, h));
+    if (scale === 1 && file.type === 'image/jpeg' && file.size < 10 * 1024 * 1024) {
+      if (src.close) src.close();
+      return toB64(file);
+    }
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(src, 0, 0, c.width, c.height);
+    if (src.close) src.close();
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', CONFIG.quality));
+    if (!blob) throw new Error('decode');
+    return toB64(blob);
+  }
+
+  // Илгээх — алдаа гарвал дахин оролдоно, түлхүүр буруу бол зогсоно
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function post(payload) {
+    let last = new Error('fail');
+    for (let a = 0; a <= CONFIG.retries; a++) {
+      try {
+        const r = await fetch(CONFIG.scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+        const j = await r.json();
+        if (j && j.ok === true) return j;
+        last = new Error((j && j.error) || 'fail');
+        if (last.message === 'key') throw last;
+      } catch (e) {
+        if (e && e.message === 'key') throw e;
+        last = e;
+      }
+      if (a < CONFIG.retries) await wait(1200 * (a + 1));
+    }
+    throw last;
+  }
+
+  function setBusy(b) {
+    busy = b;
+    document.querySelectorAll('#form input, #form textarea, #form button').forEach(el => { el.disabled = b; });
+    drop.style.pointerEvents = b ? 'none' : '';
+  }
+  function progress(done, total) {
+    $('#prog').hidden = false;
+    $('#barFill').style.width = (total ? Math.round(done / total * 100) : 0) + '%';
+    $('#progText').textContent = done + '/' + total + ' илгээгдлээ';
+  }
+  window.addEventListener('beforeunload', e => { if (busy) { e.preventDefault(); e.returnValue = ''; } });
+
+  $('#form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (busy) return;
+    const name = $('#name').value.trim();
+    if (!CONFIG.scriptUrl) return msg('Тохиргоо дутуу — Dokay-тай холбогдоорой.');
+    if (!name) { $('#name').focus(); return msg('Нэрээ бичнэ үү.'); }
+    if (!items.length) return msg('Дор хаяж нэг зураг сонгоно уу.');
+    const badN = items.filter(it => it.bad).length;
+    if (badN) return msg(badN + ' зураг уншигдсангүй. JPEG болгож дахин оруулах эсвэл устгана уу.');
+
+    msg('');
+    setBusy(true);
+    const total = items.length;
+    const saved = readSent();
+    items.forEach((it, i) => {
+      it.idx = i + 1;
+      const s = saved[sig(it.file)];
+      if (!it.sent || it.sent.idx !== it.idx) it.sent = s && s.idx === it.idx ? s : null;
+    });
+    const queue = items.filter(it => !it.sent);
+    let done = total - queue.length, failed = 0, keyErr = false;
+    progress(done, total);
+    render();
+
+    const worker = async () => {
+      while (queue.length && !keyErr) {
+        const it = queue.shift();
+        try {
+          const b64 = await prepare(it.file).catch(err => { it.bad = true; throw err; });
+          const r = await post({ o: O, k: K, kind: 'photo', idx: it.idx, total, name: it.file.name, caption: it.caption.trim(), month: it.month, mime: 'image/jpeg', b64 });
+          it.sent = { idx: it.idx, file: r.file };
+          const m = readSent(); m[sig(it.file)] = it.sent; writeSent(m);
+          done++;
+          progress(done, total);
+        } catch (err) {
+          failed++;
+          if (err && err.message === 'key') keyErr = true;
+        }
+        render();
+      }
+    };
+    await Promise.all(Array.from({ length: CONFIG.parallel }, worker));
+
+    if (keyErr) { setBusy(false); render(); return msg('Линкийн түлхүүр таарахгүй байна — Dokay-тай холбогдоорой.'); }
+    if (failed) {
+      setBusy(false); render();
+      $('#send').textContent = 'Үргэлжлүүлэх';
+      return msg(failed + ' зураг илгээгдсэнгүй. Интернэтээ шалгаад «Үргэлжлүүлэх» дээр дарна уу — илгээгдсэн зургууд давтагдахгүй.');
+    }
+
+    try {
+      await post({
+        o: O, k: K, kind: 'manifest',
+        client: { name, phone: $('#phone').value.trim(), trip: $('#trip').value.trim() },
+        items: items.map(it => ({ idx: it.idx, file: it.sent.file, caption: it.caption.trim(), month: it.month }))
+      });
+    } catch (err) {
+      setBusy(false); render();
+      $('#send').textContent = 'Үргэлжлүүлэх';
+      return msg('Зургууд илгээгдсэн ч жагсаалт хадгалагдсангүй. «Үргэлжлүүлэх» дээр дарна уу.');
+    }
+
+    busy = false;
+    try { sessionStorage.removeItem(STORE); } catch (err) {}
+    items.forEach(it => URL.revokeObjectURL(it.url));
+    show('v-done');
+    window.scrollTo(0, 0);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

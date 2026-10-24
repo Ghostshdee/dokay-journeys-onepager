@@ -25,3 +25,18 @@ Messenger зэрэг crawler JavaScript ажиллуулдаггүй.
 ## Технологи
 
 Статик HTML + CSS + vanilla JS. Фонт: Playfair Display, Manrope (Google Fonts, кирилл).
+
+## Зураг хүлээн авах
+
+`upload.html` — үйлчлүүлэгч аяллын зургаа тайлбар, он сартай нь илгээх маягт.
+Нүүр хуудаснаас холбоосгүй, зөвхөн хувийн линкээр нээгдэнэ (`noindex`):
+
+    upload.html?o=<захиалгын код>&k=<түлхүүр>
+
+- Зургийг хааны Google Drive-д **Apps Script web app** хүлээж авна
+  (`apps-script/Code.gs`, deploy заавар файлын толгойд).
+- Deploy хийсний дараа URL-ийг `upload.html`-ийн `CONFIG.scriptUrl`-д тавина.
+  Хоосон бол маягт «Тохиргоо дутуу» гэж харуулна.
+- Шинэ захиалга: Script Properties → `KEYS` JSON-д `"<код>":"<түлхүүр>"` нэмээд линкийг өгнө.
+- Зураг бүрийг урт тал ≤ 3000 px, JPEG болгож тусад нь илгээнэ. Тасарвал «Үргэлжлүүлэх».
+- Drive-д: `Dokay Journeys — Захиалга/<код>/001.jpg …`, `manifest.json`, `тайлбар.txt`.
