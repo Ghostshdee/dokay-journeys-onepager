@@ -85,7 +85,7 @@ function saveManifest_(o, d) {
   var items = Array.isArray(d.items) ? d.items.slice(0, 200) : [];
   if (!items.length) return { ok: false, error: 'items' };
   var c = d.client || {};
-  var client = { name: str_(c.name, 80), phone: str_(c.phone, 40), trip: str_(c.trip, 120) };
+  var client = { name: str_(c.name, 80), phone: str_(c.phone, 40), trip: str_(c.trip, 120), song: str_(c.song, 500) };
   var clean = items.map(function (it) {
     return {
       idx: Number(it.idx) || 0,
@@ -102,6 +102,7 @@ function saveManifest_(o, d) {
     'Захиалга: ' + o,
     'Захиалагч: ' + client.name + (client.phone ? ' · ' + client.phone : ''),
     'Аялал: ' + (client.trip || '—'),
+    'Дуу: ' + (client.song || '—'),
     'Зураг: ' + clean.length,
     ''
   ];

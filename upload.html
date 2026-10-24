@@ -136,6 +136,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible{ outline:2px sol
         <label class="f"><span>Нэр <em>*</em></span><input type="text" id="name" autocomplete="name" maxlength="80" required></label>
         <label class="f"><span>Утас</span><input type="tel" id="phone" autocomplete="tel" inputmode="tel" maxlength="40"></label>
         <label class="f"><span>Аяллын нэр, газар</span><input type="text" id="trip" maxlength="120" placeholder="Жишээ: Хөвсгөл 2026"></label>
+        <label class="f"><span>Слайд видеоны дуу (заавал биш)</span><textarea id="song" maxlength="500" rows="2" placeholder="YouTube эсвэл Spotify линк — 1–3 дуу, мөр бүрд нэг"></textarea></label>
       </div>
 
       <div class="card">
@@ -411,7 +412,7 @@ input:focus-visible,textarea:focus-visible,button:focus-visible{ outline:2px sol
     try {
       await post({
         o: O, k: K, kind: 'manifest',
-        client: { name, phone: $('#phone').value.trim(), trip: $('#trip').value.trim() },
+        client: { name, phone: $('#phone').value.trim(), trip: $('#trip').value.trim(), song: $('#song').value.trim() },
         items: items.map(it => ({ idx: it.idx, file: it.sent.file, caption: it.caption.trim(), month: it.month }))
       });
     } catch (err) {
